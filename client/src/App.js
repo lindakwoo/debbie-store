@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import ProductsScreen from "./screens/ProductsScreen";
+import { styled, Box, Stack, ThemeProvider } from "@mui/system";
+
+import { theme } from "./theme";
+import Header from "./components/Header";
+import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme = {theme}>
+
+      <Router><Header/> <main>
+        <Routes>
+       <Route path = '/' element = {<ProductsScreen/>}/></Routes></main></Router>
+  
+    </ThemeProvider>
   );
 }
 
