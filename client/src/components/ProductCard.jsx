@@ -1,10 +1,17 @@
 import React from "react";
 import { styled, Box, Stack } from "@mui/system";
 import { BiExpand } from "react-icons/bi";
+import { addToFavorites, removeFromFavorites } from "../redux/actions/productActions";
+import { useSelector, useDispatch } from "react-redux";
+import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 
 const Image = styled("img")(() => {});
+const StyledIcon = styled(MdOutlineFavorite)({});
+const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
 
 const ProductCard = ({ product, loading }) => {
+  const dispatch = useDispatch();
+  const { favorites } = useSelector((state) => state.product);
   return (
     <>
       <Box
@@ -40,6 +47,39 @@ const ProductCard = ({ product, loading }) => {
           <Box sx={{ backgroundColor: "#71dede" }}>{product.category}</Box>
           <Box sx={{ fontWeight: "semibold", marginTop: "5px", color: "#71dede" }}>${product.price}</Box>
         </Stack>
+        {favorites.includes(product._id) ? (
+          <Box
+            onClick={() => {
+              console.log("clicked");
+              dispatch(removeFromFavorites(product._id));
+            }}
+          >
+            <StyledIcon
+              sx={{
+                fill: "red",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+            />
+          </Box>
+        ) : (
+          <Box
+            onClick={() => {
+              console.log("clicked off");
+              dispatch(addToFavorites(product._id));
+            }}
+          >
+            <StyledIconBorder
+              sx={{
+                stroke: "red",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );
