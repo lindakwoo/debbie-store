@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled, Box, Stack } from "@mui/system";
 import { BiExpand } from "react-icons/bi";
+import { Link } from "react-router-dom";
 import { addToFavorites, removeFromFavorites } from "../redux/actions/productActions";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
@@ -8,8 +9,11 @@ import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 const Image = styled("img")(() => {});
 const StyledIcon = styled(MdOutlineFavorite)({});
 const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
+const Expand = styled(BiExpand)({});
+const StyledLink = styled(Link)({});
 
 const ProductCard = ({ product, loading }) => {
+  const [isShown, setIsShown] = useState(false);
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.product);
   return (
@@ -26,8 +30,10 @@ const ProductCard = ({ product, loading }) => {
         }}
       >
         <Image
+          onMouseEnter={() => setIsShown(true)}
+          onMouseLeave={() => setIsShown(false)}
           sx={{ height: "200px", width: "200px" }}
-          src={product.images[0]}
+          src={product.images[isShown ? (product.images.length === 2 ? 1 : 0) : 0]}
           fallbackSrc='https://via.placeholder.com/150'
           height='200px'
         />{" "}
@@ -47,39 +53,44 @@ const ProductCard = ({ product, loading }) => {
           <Box sx={{ backgroundColor: "#71dede" }}>{product.category}</Box>
           <Box sx={{ fontWeight: "semibold", marginTop: "5px", color: "#71dede" }}>${product.price}</Box>
         </Stack>
-        {favorites.includes(product._id) ? (
-          <Box
-            onClick={() => {
-              console.log("clicked");
-              dispatch(removeFromFavorites(product._id));
-            }}
-          >
-            <StyledIcon
-              sx={{
-                fill: "red",
-                "&:hover": {
-                  cursor: "pointer",
-                },
+        <Stack direction='row' justifyContent='space-between'>
+          {favorites.includes(product._id) ? (
+            <Box
+              onClick={() => {
+                console.log("clicked");
+                dispatch(removeFromFavorites(product._id));
               }}
-            />
-          </Box>
-        ) : (
-          <Box
-            onClick={() => {
-              console.log("clicked off");
-              dispatch(addToFavorites(product._id));
-            }}
-          >
-            <StyledIconBorder
-              sx={{
-                stroke: "red",
-                "&:hover": {
-                  cursor: "pointer",
-                },
+            >
+              <StyledIcon
+                sx={{
+                  fill: "red",
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+              />
+            </Box>
+          ) : (
+            <Box
+              onClick={() => {
+                console.log("clicked off");
+                dispatch(addToFavorites(product._id));
               }}
-            />
-          </Box>
-        )}
+            >
+              <StyledIconBorder
+                sx={{
+                  stroke: "red",
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+              />
+            </Box>
+          )}
+          <StyledLink to={`/product/${product._id}`}>
+            <Expand />
+          </StyledLink>
+        </Stack>
       </Box>
     </>
   );

@@ -31,16 +31,21 @@ const ProductsScreen = () => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+            gridTemplateColumns: error ? "1fr" : { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
             p: "10px",
             minHeight: "80vh",
             mx: { base: "12", md: "20", lg: "32" },
             placeItems: "center",
           }}
         >
-          {products.map((product) => {
-            return <ProductCard product={product} loading={loading} />;
-          })}
+          {error ? (
+            <Box sx={{ backgroundColor: "pink", width: "80%" }}>ALERT! There is an error: {error}</Box>
+          ) : (
+            products.map((product) => {
+              return <ProductCard product={product} loading={loading} />;
+            })
+          )}
+
           {!favoritesToggled && (
             <>
               <Stack sx={{ mt: "24px" }} direction='row'>
