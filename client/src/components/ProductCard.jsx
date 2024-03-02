@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled, Box, Stack } from "@mui/system";
 import { BiExpand } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { addToFavorites, removeFromFavorites } from "../redux/actions/productActions";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { addCartItem } from "../redux/actions/cartActions";
+import { TbShoppingCartPlus } from "react-icons/tb";
 
 const Image = styled("img")(() => {});
 const StyledIcon = styled(MdOutlineFavorite)({});
 const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
 const Expand = styled(BiExpand)({});
 const StyledLink = styled(Link)({});
+const CartPlus = styled(TbShoppingCartPlus)({});
+const Button = styled("button")({});
 
 const ProductCard = ({ product, loading }) => {
   const [isShown, setIsShown] = useState(false);
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.product);
+  const { cartItems } = useSelector((state) => state.cart);
+  const [cartPlusDisabled, setCartPlusDisabled] = useState(false);
+
+  useEffect(() => {
+    const item = cartItems.find((cartItem) => cartItem.id === product._id);
+    if (item && item.qty === product.stock) {
+      setCartPlusDisabled(true);
+    }
+  }, [product, cartItems]);
+
+  // add an item to the cart
+  const addItem = (id) => {
+    console.log("add item is being used!!");
+    if (cartItems.some((cartItem) => cartItem.id === id)) {
+      const item = cartItems.find((cartItem) => cartItem.id === id);
+      dispatch(addCartItem(id, item.qty + 1));
+    } else {
+      dispatch(addCartItem(id, 1));
+    }
+  };
+
   return (
     <>
       <Box
@@ -90,6 +115,17 @@ const ProductCard = ({ product, loading }) => {
           <StyledLink to={`/product/${product._id}`}>
             <Expand />
           </StyledLink>
+          <Box
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={() => addItem(product._id)}
+          >
+            {" "}
+            <CartPlus size='20px' />
+          </Box>
         </Stack>
       </Box>
     </>

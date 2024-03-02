@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { TbShoppingCart } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import NavLink from "./NavLink";
 import { toggleFavorites } from "../redux/actions/productActions";
@@ -14,6 +15,7 @@ import { HiArrowSmallLeft, HiArrowSmallRight } from "react-icons/hi2";
 
 const StyledIcon = styled(MdOutlineFavorite)({});
 const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
+const ShoppingCart = styled(TbShoppingCart)({});
 const PhoneIcon = styled(BsPhoneFlip)({});
 const StyledLink = styled(Link)({});
 const StyledHamburger = styled(Hamburger)({});
@@ -28,7 +30,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { favoritesToggled } = useSelector((state) => state.product);
   const [isOpen, setIsOpen] = useState(false);
-  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const { cartItems } = useSelector((state) => state.cart);
 
   useEffect(() => {}, [favoritesToggled, dispatch]);
   return (
@@ -36,8 +38,20 @@ const Header = () => {
       <Stack direction='row' sx={{ height: "100px" }} alignItems='center' justifyContent='space-between'>
         <Stack sx={{ display: { xs: "flex", md: "none" } }} alignItems='center'></Stack>
         <Stack direction='row' spacing={8} sx={{ alignItems: "center" }}>
-          <Stack sx={{ display: { xs: "flex", md: "none" } }}>
+          <Stack
+            direction='row'
+            alignContent='center'
+            justifyContent='center'
+            sx={{ display: { xs: "flex", md: "none" } }}
+            spacing={8}
+          >
             <StyledHamburger toggled={isOpen} toggle={setIsOpen} />
+            <Stack direction='row' alignItems='center'>
+              <StyledLink to='/cart'>
+                <ShoppingCart sx={{ height: "24px", width: "24px" }} />
+                {cartItems.length > 0 && <Box>{cartItems.length}</Box>}
+              </StyledLink>
+            </Stack>
           </Stack>
           <StyledLink to='/' sx={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             <PhoneIcon sx={{ height: "50px", width: "50px" }} />
@@ -49,6 +63,12 @@ const Header = () => {
                 <Box>{link.name}</Box>
               </NavLink>
             ))}
+            <Stack direction='row' alignItems='center'>
+              <StyledLink to='/cart'>
+                <ShoppingCart sx={{ height: "24px", width: "24px" }} />
+                {cartItems.length > 0 && <Box sx={{ ml: "12px" }}>{cartItems.length}</Box>}
+              </StyledLink>
+            </Stack>
           </Stack>
 
           {favoritesToggled ? (
