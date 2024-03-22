@@ -1,14 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Box, styled, Stack } from "@mui/system";
-
-const Button = styled("button")({});
-const StyledLink = styled(Link)({});
+import { IconButton } from "@chakra-ui/react";
+import { Link as ReactLink } from "react-router-dom";
 
 const NavLink = ({ children, route }) => (
-  <StyledLink to={route}>
-    <Button>{children}</Button>
-  </StyledLink>
+  <IconButton as={ReactLink} px='2' py='1' rounded='md' variant='ghost' to={route}>
+    {children}
+  </IconButton>
 );
 
 export default NavLink;

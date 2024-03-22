@@ -1,24 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import {
+  IconButton,
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+  useColorModeValue as mode,
+  useDisclosure,
+  AlertDescription,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Divider,
+  Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Spacer,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { BsPhoneFlip } from "react-icons/bs";
+import { Link as ReactLink } from "react-router-dom";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
-import { TbShoppingCart } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import NavLink from "./NavLink";
+import ColorModeToggle from "./ColorModeToggle";
+import { BiUserCheck, BiLogInCircle } from "react-icons/bi";
 import { toggleFavorites } from "../redux/actions/productActions";
-import { styled, Box, Stack } from "@mui/system";
-import { BsPhoneFlip } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { BiUserCheck } from "react-icons/bi";
-import useDisclosure from "../hooks/useDisclosure";
-import Hamburger from "hamburger-react";
-
-import { HiArrowSmallLeft, HiArrowSmallRight } from "react-icons/hi2";
-
-const StyledIcon = styled(MdOutlineFavorite)({});
-const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
-const ShoppingCart = styled(TbShoppingCart)({});
-const PhoneIcon = styled(BsPhoneFlip)({});
-const StyledLink = styled(Link)({});
-const StyledHamburger = styled(Hamburger)({});
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { TbShoppingCart } from "react-icons/tb";
+import { logout } from "../redux/actions/userActions";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { FcGoogle } from "react-icons/fc";
 
 const Links = [
   { name: "Products", route: "/products" },
@@ -26,129 +44,195 @@ const Links = [
   { name: "Contact", route: "/contact" },
   { name: "Services", route: "/services" },
 ];
+
 const Header = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
+  const toast = useToast();
   const { favoritesToggled } = useSelector((state) => state.product);
-  const [isOpen, setIsOpen] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
+  const [showBanner, setShowBanner] = useState(userInfo ? !userInfo.active : false);
 
-  useEffect(() => {}, [favoritesToggled, dispatch]);
+  useEffect(() => {
+    if (userInfo && !userInfo.active) {
+      setShowBanner(true);
+    }
+  }, [favoritesToggled, dispatch, userInfo]);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    toast({
+      description: "You have been logged out.",
+      status: "success",
+      isClosable: "true",
+    });
+  };
+
   return (
-    <Box sx={{ backgroundColor: "cyan", height: "100px" }}>
-      <Stack direction='row' sx={{ height: "100px" }} alignItems='center' justifyContent='space-between'>
-        <Stack sx={{ display: { xs: "flex", md: "none" } }} alignItems='center'></Stack>
-        <Stack direction='row' spacing={8} sx={{ alignItems: "center" }}>
-          <Stack
-            direction='row'
-            alignContent='center'
-            justifyContent='center'
-            sx={{ display: { xs: "flex", md: "none" } }}
-            spacing={8}
-          >
-            <StyledHamburger toggled={isOpen} toggle={setIsOpen} />
-            <Stack direction='row' alignItems='center'>
-              <StyledLink to='/cart'>
-                <ShoppingCart sx={{ height: "24px", width: "24px" }} />
-                {cartItems.length > 0 && <Box>{cartItems.length}</Box>}
-              </StyledLink>
-            </Stack>
-          </Stack>
-          <StyledLink to='/' sx={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <PhoneIcon sx={{ height: "50px", width: "50px" }} />
-            <Box sx={{ fontSize: "40px" }}>Debbie's store</Box>
-          </StyledLink>
-          <Stack direction='row' spacing={8} sx={{ display: { xs: "none", md: "flex" } }}>
-            {Links.map((link) => (
-              <NavLink route={link.route} key={link.route}>
-                <Box>{link.name}</Box>
-              </NavLink>
-            ))}
-            <Stack direction='row' alignItems='center'>
-              <StyledLink to='/cart'>
-                <ShoppingCart sx={{ height: "24px", width: "24px" }} />
-                {cartItems.length > 0 && <Box sx={{ ml: "12px" }}>{cartItems.length}</Box>}
-              </StyledLink>
-            </Stack>
-          </Stack>
+    <>
+      <Box bg={mode(`cyan.300`, "gray.900")} px='4'>
+        <Flex h='16' alignItems='center' justifyContent='space-between'>
+          <Flex display={{ base: "flex", md: "none" }} alignItems='center'>
+            <IconButton
+              bg='parent'
+              size='md'
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              onClick={isOpen ? onClose : onOpen}
+            />
+            <IconButton
+              ml='12'
+              position='absolute'
+              icon={<TbShoppingCart size='20px' />}
+              as={ReactLink}
+              to='/cart'
+              variant='ghost'
+            />
+            {cartItems.length > 0 && (
+              <Text fontWeight='bold' fontStyle='italic' position='absolute' ml='74px' mt='-6' fontSize='sm'>
+                {cartItems.length}
+              </Text>
+            )}
+          </Flex>
+          <HStack spacing='8' alignItems='center'>
+            <Box alignItems='center' display='flex' as={ReactLink} to='/'>
+              <Icon as={BsPhoneFlip} h='6' w='6' color={mode("black", "yellow.200")} />
+              <Text as='b'>Debbie's store</Text>
+            </Box>
 
-          {favoritesToggled ? (
-            <Box
-              onClick={() => {
-                dispatch(toggleFavorites(false));
-              }}
-            >
-              <StyledIcon
-                sx={{
-                  "&:hover": {
-                    cursor: "pointer",
-                  },
-                }}
-              />
-            </Box>
-          ) : (
-            <Box
-              onClick={() => {
-                dispatch(toggleFavorites(true));
-              }}
-            >
-              <StyledIconBorder
-                sx={{
-                  "&:hover": {
-                    cursor: "pointer",
-                  },
-                }}
-              />
-            </Box>
-          )}
-        </Stack>
-        <Stack>
-          <BiUserCheck />
-        </Stack>
-      </Stack>
-      <Box sx={{ display: "flex" }}>
-        {isOpen && (
-          <Box sx={{ display: { md: "none" } }}>
-            <Stack>
-              {" "}
+            <HStack as='nav' spacing='4' display={{ base: "none", md: "flex" }}>
               {Links.map((link) => (
                 <NavLink route={link.route} key={link.route}>
-                  <Box>{link.name}</Box>
+                  <Text fontWeight='medium'>{link.name}</Text>
                 </NavLink>
               ))}
-            </Stack>
-            {favoritesToggled ? (
-              <Box
-                onClick={() => {
-                  dispatch(toggleFavorites(false));
-                }}
-              >
-                <StyledIcon
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  }}
-                />
+              <Box>
+                <IconButton icon={<TbShoppingCart size='20px' />} as={ReactLink} to='/cart' variant='ghost' />
+                {cartItems.length > 0 && (
+                  <Text fontWeight='bold' fontStyle='italic' position='absolute' ml='26px' mt='-6' fontSize='sm'>
+                    {cartItems.length}
+                  </Text>
+                )}
               </Box>
+
+              <ColorModeToggle />
+              {favoritesToggled ? (
+                <IconButton
+                  onClick={() => dispatch(toggleFavorites(false))}
+                  icon={<MdOutlineFavorite size='20px' />}
+                  variant='ghost'
+                />
+              ) : (
+                <IconButton
+                  onClick={() => dispatch(toggleFavorites(true))}
+                  icon={<MdOutlineFavoriteBorder size='20px' />}
+                  variant='ghost'
+                />
+              )}
+            </HStack>
+          </HStack>
+          <Flex alignItems='center'>
+            {userInfo ? (
+              <Menu>
+                <MenuButton rounded='full' variant='link' cursor='pointer' minW='0'>
+                  <HStack>
+                    {userInfo.googleImage ? (
+                      <Image
+                        borderRadius='full'
+                        boxSize='40px'
+                        src={userInfo.googleImage}
+                        referrerPolicy='no-referrer'
+                      />
+                    ) : (
+                      <BiUserCheck size='30' />
+                    )}
+
+                    <ChevronDownIcon />
+                  </HStack>
+                </MenuButton>
+                <MenuList>
+                  <HStack>
+                    <Text pl='3' as='i'>
+                      {userInfo.email}
+                    </Text>
+                    {/* {userInfo.googleId && <FcGoogle />} */}
+                  </HStack>
+                  <Divider py='1' />
+                  <MenuItem as={ReactLink} to='/order-history'>
+                    Order History
+                  </MenuItem>
+                  <MenuItem as={ReactLink} to='/profile'>
+                    Profile
+                  </MenuItem>
+                  {userInfo.isAdmin && (
+                    <>
+                      <MenuDivider />
+                      <MenuItem as={ReactLink} to='/admin-console'>
+                        <MdOutlineAdminPanelSettings />
+                        <Text ml='2'>Admin Console</Text>
+                      </MenuItem>
+                    </>
+                  )}
+                  <MenuDivider />
+                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
             ) : (
-              <Box
-                onClick={() => {
-                  dispatch(toggleFavorites(true));
-                }}
-              >
-                <StyledIconBorder
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  }}
-                />
-              </Box>
+              <Menu>
+                <MenuButton as={IconButton} variant='ghost' cursor='pointer' icon={<BiLogInCircle size='25px' />} />
+                <MenuList>
+                  <MenuItem as={ReactLink} to='/login' p='2' fontWeight='400' variant='link'>
+                    Sign in
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem as={ReactLink} to='/registration' p='2' fontWeight='400' variant='link'>
+                    Sign up
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             )}
-          </Box>
-        )}
+          </Flex>
+        </Flex>
+        <Box display='flex'>
+          {isOpen && (
+            <Box pb='4' display={{ md: "none" }}>
+              <Stack as='nav' spacing='4'>
+                {Links.map((link) => (
+                  <NavLink route={link.route} key={link.route}>
+                    <Text fontWeight='medium'>{link.name}</Text>
+                  </NavLink>
+                ))}
+              </Stack>
+              {favoritesToggled ? (
+                <IconButton
+                  onClick={() => dispatch(toggleFavorites(false))}
+                  icon={<MdOutlineFavorite size='20px' />}
+                  variant='ghost'
+                />
+              ) : (
+                <IconButton
+                  onClick={() => dispatch(toggleFavorites(true))}
+                  icon={<MdOutlineFavoriteBorder size='20px' />}
+                  variant='ghost'
+                />
+              )}
+              <ColorModeToggle />
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Box>
+      {userInfo && !userInfo.active && showBanner && (
+        <Box>
+          <Alert status='warning'>
+            <AlertIcon />
+            <AlertTitle>Email not verified!</AlertTitle>
+            <AlertDescription>You must verify your email address.</AlertDescription>
+            <Spacer />
+            <CloseIcon cursor={"pointer"} onClick={() => setShowBanner(false)} />
+          </Alert>
+        </Box>
+      )}
+    </>
   );
 };
 

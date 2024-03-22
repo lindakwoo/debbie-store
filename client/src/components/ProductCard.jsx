@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { styled, Box, Stack } from "@mui/system";
+import { Box, Image, Text, Badge, Flex, IconButton, Skeleton, useToast, Tooltip } from "@chakra-ui/react";
 import { BiExpand } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { addToFavorites, removeFromFavorites } from "../redux/actions/productActions";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { Link as ReactLink } from "react-router-dom";
 import { addCartItem } from "../redux/actions/cartActions";
+import { useEffect } from "react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 
-const Image = styled("img")(() => {});
-const StyledIcon = styled(MdOutlineFavorite)({});
-const StyledIconBorder = styled(MdOutlineFavoriteBorder)({});
-const Expand = styled(BiExpand)({});
-const StyledLink = styled(Link)({});
-const CartPlus = styled(TbShoppingCartPlus)({});
-const Button = styled("button")({});
-
 const ProductCard = ({ product, loading }) => {
-  const [isShown, setIsShown] = useState(false);
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.product);
+  const [isShown, setIsShown] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
+  const toast = useToast();
   const [cartPlusDisabled, setCartPlusDisabled] = useState(false);
 
   useEffect(() => {
@@ -30,105 +24,108 @@ const ProductCard = ({ product, loading }) => {
     }
   }, [product, cartItems]);
 
-  // add an item to the cart
   const addItem = (id) => {
-    console.log("add item is being used!!");
     if (cartItems.some((cartItem) => cartItem.id === id)) {
       const item = cartItems.find((cartItem) => cartItem.id === id);
       dispatch(addCartItem(id, item.qty + 1));
     } else {
       dispatch(addCartItem(id, 1));
     }
+    toast({
+      description: "Item has been added.",
+      status: "success",
+      isClosable: true,
+    });
   };
 
   return (
-    <>
+    <Skeleton isLoaded={!loading}>
       <Box
-        sx={{
-          border: "1px solid black",
-          overflow: "hidden",
-          p: "5px",
-          boxShadow: " 2px 3px grey",
-          "&:hover": { transform: "scale(1.1)", transitionDuration: "1s" },
-          mx: "10px",
-          width: "235px",
-        }}
+        _hover={{ transform: "scale(1.1)", transitionDuration: "0.5s" }}
+        borderWidth='1px'
+        overflow='hidden'
+        p='4'
+        shadow='md'
       >
         <Image
           onMouseEnter={() => setIsShown(true)}
           onMouseLeave={() => setIsShown(false)}
-          sx={{ height: "200px", width: "200px" }}
-          src={product.images[isShown ? (product.images.length === 2 ? 1 : 0) : 0]}
+          src={product.images[isShown && product.images.length === 2 ? 1 : 0]}
           fallbackSrc='https://via.placeholder.com/150'
+          alt={product.name}
           height='200px'
-        />{" "}
+        />
         {product.stock < 5 ? (
-          <Box sx={{ backgroundColor: "yellow" }}>only {product.stock} left </Box>
+          <Badge colorScheme='yellow'>only {product.stock} left</Badge>
         ) : product.stock < 1 ? (
-          <Box sx={{ backgroundColor: "pink" }}>Sold out</Box>
+          <Badge colorScheme='red'>Sold out</Badge>
         ) : (
-          <Box sx={{ backgroundColor: "green" }}>In Stock</Box>
+          <Badge colorScheme='green'>In Stock</Badge>
         )}
-        {product.productIsNew && <Box>New</Box>}
-        <Box sx={{ fontSize: "32px", fontWeight: "semibold", marginTop: "25px", marginBottom: "0" }}>
-          {product.brand} {product.name}{" "}
-        </Box>
-        <Box sx={{ fontSize: "16px", marginTop: "5px", color: "gray" }}>{product.subtitle}</Box>
-        <Stack direction='row' justifyContent='space-between' alignItems='center'>
-          <Box sx={{ backgroundColor: "#71dede" }}>{product.category}</Box>
-          <Box sx={{ fontWeight: "semibold", marginTop: "5px", color: "#71dede" }}>${product.price}</Box>
-        </Stack>
-        <Stack direction='row' justifyContent='space-between'>
+        {product.productIsNew && (
+          <Badge ml='2' colorScheme='purple'>
+            new
+          </Badge>
+        )}
+        <Text noOfLines={1} fontSize='xl' fontWeight='semibold' mt='2'>
+          {product.brand} {` `} {product.name}
+        </Text>
+        <Text noOfLines={1} fontSize='md' color='gray.600'>
+          {product.subtitle}
+        </Text>
+        <Flex justify='space-between' alignItems='center' mt='2'>
+          <Badge colorScheme='cyan'>{product.category}</Badge>
+          <Text fontSize='xl' fontWeight='semibold' color='cyan.600'>
+            ${product.price}
+          </Text>
+        </Flex>
+        <Flex justify='space-between' mt='2'>
           {favorites.includes(product._id) ? (
-            <Box
-              onClick={() => {
-                console.log("clicked");
-                dispatch(removeFromFavorites(product._id));
-              }}
-            >
-              <StyledIcon
-                sx={{
-                  fill: "red",
-                  "&:hover": {
-                    cursor: "pointer",
-                  },
-                }}
-              />
-            </Box>
+            <IconButton
+              icon={<MdOutlineFavorite size='20px' />}
+              colorScheme='cyan'
+              size='sm'
+              onClick={() => dispatch(removeFromFavorites(product._id))}
+            />
           ) : (
-            <Box
-              onClick={() => {
-                console.log("clicked off");
-                dispatch(addToFavorites(product._id));
-              }}
-            >
-              <StyledIconBorder
-                sx={{
-                  stroke: "red",
-                  "&:hover": {
-                    cursor: "pointer",
-                  },
-                }}
-              />
-            </Box>
+            <IconButton
+              icon={<MdOutlineFavoriteBorder size='20px' />}
+              colorScheme='cyan'
+              size='sm'
+              onClick={() => dispatch(addToFavorites(product._id))}
+            />
           )}
-          <StyledLink to={`/product/${product._id}`}>
-            <Expand />
-          </StyledLink>
-          <Box
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-              },
-            }}
-            onClick={() => addItem(product._id)}
+
+          <IconButton
+            icon={<BiExpand size='20' />}
+            as={ReactLink}
+            to={`/product/${product._id}`}
+            colorScheme='cyan'
+            size='sm'
+          />
+
+          <Tooltip
+            isDisabled={!cartPlusDisabled}
+            hasArrow
+            label={
+              !cartPlusDisabled
+                ? "You reached the maximum quantity jof the product. "
+                : product.stock <= 0
+                  ? "Out of stock"
+                  : ""
+            }
           >
-            {" "}
-            <CartPlus size='20px' />
-          </Box>
-        </Stack>
+            <IconButton
+              isDisabled={product.stock <= 0 || cartPlusDisabled}
+              onClick={() => addItem(product._id)}
+              icon={<TbShoppingCartPlus size='20' />}
+              colorScheme='cyan'
+              size='sm'
+            />
+          </Tooltip>
+        </Flex>
       </Box>
-    </>
+    </Skeleton>
   );
 };
 
