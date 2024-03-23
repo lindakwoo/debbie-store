@@ -16,6 +16,10 @@ import axios from "axios";
 import { VStack, Spinner } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import {GoogleOAuthProvider} from "@react-oauth/google";
+import CheckoutScreen from "./screens/CheckoutScreen";
+import CancelScreen from "./screens/CancelScreen";
+import YourOrdersScreen from "./screens/YourOrdersScreen";
+import SuccessScreen from "./screens/SuccessScreen";
 
 function App() {
   const theme2 = extendTheme({
@@ -55,7 +59,11 @@ function App() {
                 <Route path='/login' element={<LoginScreen />} />
                 <Route path='/registration' element={<RegistrationScreen />} />
                 <Route path='/email-verify/:token' element={<EmailVerificationScreen />} />
-                <Route path='/password-reset/:token' element={<PasswordResetScreen />} />
+                  <Route path='/password-reset/:token' element={<PasswordResetScreen />} />
+                  <Route path='/checkout' element={<CheckoutScreen />} />
+                  <Route path='/cancel' element={<CancelScreen />} />
+                  <Route path='/order-history' element={<YourOrdersScreen />} />
+                  <Route path='/success' element={<SuccessScreen />} />
               </Routes>
             </main>
             <Footer />

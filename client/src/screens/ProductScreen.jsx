@@ -28,7 +28,7 @@ import { getProduct } from "../redux/actions/productActions";
 import { useEffect, useState } from "react";
 import { addCartItem } from "../redux/actions/cartActions";
 import Star from "../components/Star";
-// import { createProductReview } from "../redux/actions/productActions";
+import { createProductReview } from "../redux/actions/productActions";
 
 const ProductScreen = () => {
   const [amount, setAmount] = useState(1);
@@ -82,10 +82,10 @@ const ProductScreen = () => {
   };
 
   const hasUserReviewed = () => product.reviews.some((item) => item.user === userInfo._id);
-  // const onSubmit = () => {
-  //   setButtonLoading(true);
-  //   dispatch(createProductReview(product._id, userInfo._id, comment, rating, title));
-  // };
+  const onSubmit = () => {
+    setButtonLoading(true);
+    dispatch(createProductReview(product._id, userInfo._id, comment, rating, title));
+  };
 
   return (
     <Wrap spacing='30px' justify='center' minHeight='100vh'>
@@ -212,7 +212,7 @@ const ProductScreen = () => {
                     Write a review
                   </Button>
                 </Tooltip>
-                {/* {reviewBoxOpen && (
+                {reviewBoxOpen && (
                   <Stack mb='20px'>
                     <Wrap>
                       <HStack spacing='2px'>
@@ -239,7 +239,7 @@ const ProductScreen = () => {
                       }}
                       placeholder='Review title (optional)'
                     />
-                    <Textarea
+                    <textarea
                       onChange={(e) => {
                         setComment(e.target.value);
                       }}
@@ -255,7 +255,7 @@ const ProductScreen = () => {
                       Publish review
                     </Button>
                   </Stack>
-                )} */}
+                )}
               </>
             )}
             <Stack>
