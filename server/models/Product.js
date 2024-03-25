@@ -22,6 +22,12 @@ const productSchema = new mongoose.Schema(
       required: true,
       default: [],
     },
+    subtitle: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
     brand: {
       type: String,
       required: true,
@@ -38,11 +44,11 @@ const productSchema = new mongoose.Schema(
     rating: {
       type: Number,
       required: true,
-      default: 0,
+      default: 5,
     },
     numberOfReviews: {
       type: Number,
-      required: true,
+      default: 0
     },
     price: {
       type: Number,
@@ -58,6 +64,7 @@ const productSchema = new mongoose.Schema(
     },
     stripeId: {
       type: String,
+      default: 0,
     },
   },
   { timestamps: true }

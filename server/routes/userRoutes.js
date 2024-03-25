@@ -4,14 +4,14 @@ import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import { sendVerificationEmail } from "../middleware/sendVerificationEmail.js";
 import { sendPasswordResetEmail } from "../middleware/sendPasswordResetEmail.js";
-import { protectRoute } from '../middleware/authMiddleware.js';
+import { admin, protectRoute } from "../middleware/authMiddleware.js";
 import Order from "../models/Order.js";
 
 const userRoutes = express.Router();
 
 // TO-DO redefine expiresIn
 const genToken = (id) => {
-  return jwt.sign({ id }, process.env.TOKEN_SECRET, { expiresIn: "60d" });
+  return jwt.sign({ id }, process.env.TOKEN_SECRET, { expiresIn: "1d" });
 };
 
 // login
@@ -80,21 +80,10 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // verify email
 const verifyEmail = asyncHandler(async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-    const user = await User.findById(decoded.id);
-
-    if (user) {
-      user.active = true;
-      await user.save();
-      res.json("Thanks for activating your account. You can close this window now.");
-    } else {
-      res.status(404).send("User not found");
-    }
-  } catch (error) {
-    res.status(401).send("Email address could not be verified");
-  }
+  const user = req.user;
+  user.active = true;
+  await user.save();
+  res.json("Thanks for activating your account. You can close this window now.");
 });
 
 // password reset request
@@ -133,54 +122,54 @@ const passwordReset = asyncHandler(async (req, res) => {
 
 // google login
 const googleLogin = asyncHandler(async (req, res) => {
-	const { googleId, email, name, googleImage } = req.body;
-	console.log(googleId, email, name, googleImage);
+  const { googleId, email, name, googleImage } = req.body;
+  console.log(googleId, email, name, googleImage);
 
-	try {
+  try {
     const user = await User.findOne({ googleId: googleId });
     console.log(user);
-		if (user) {
-			user.firstLogin = false;
-			await user.save();
-			res.json({
-				_id: user._id,
-				name: user.name,
-				email: user.email,
-				googleImage: user.googleImage,
-				googleId: user.googleId,
-				firstLogin: user.firstLogin,
-				isAdmin: user.isAdmin,
-				token: genToken(user._id),
-				active: user.active,
-				createdAt: user.createdAt,
-			});
-		} else {
-			const newUser = await User.create({
-				name,
-				email,
-				googleImage,
-				googleId,
-			});
+    if (user) {
+      user.firstLogin = false;
+      await user.save();
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        googleImage: user.googleImage,
+        googleId: user.googleId,
+        firstLogin: user.firstLogin,
+        isAdmin: user.isAdmin,
+        token: genToken(user._id),
+        active: user.active,
+        createdAt: user.createdAt,
+      });
+    } else {
+      const newUser = await User.create({
+        name,
+        email,
+        googleImage,
+        googleId,
+      });
 
-			const newToken = genToken(newUser._id);
+      const newToken = genToken(newUser._id);
 
-			sendVerificationEmail(newToken, newUser.email, newUser.name, newUser._id);
-			res.json({
-				_id: newUser._id,
-				name: newUser.name,
-				email: newUser.email,
-				googleImage: newUser.googleImage,
-				googleId: newUser.googleId,
-				firstLogin: newUser.firstLogin,
-				isAdmin: newUser.isAdmin,
-				token: genToken(newUser._id),
-				active: newUser.active,
-				createdAt: newUser.createdAt,
-			});
-		}
-	} catch (error) {
-		res.status(404).send('Something went wrong, please try again later.');
-	}
+      sendVerificationEmail(newToken, newUser.email, newUser.name, newUser._id);
+      res.json({
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        googleImage: newUser.googleImage,
+        googleId: newUser.googleId,
+        firstLogin: newUser.firstLogin,
+        isAdmin: newUser.isAdmin,
+        token: genToken(newUser._id),
+        active: newUser.active,
+        createdAt: newUser.createdAt,
+      });
+    }
+  } catch (error) {
+    res.status(404).send("Something went wrong, please try again later.");
+  }
 });
 
 const getUserOrders = asyncHandler(async (req, res) => {
@@ -188,18 +177,34 @@ const getUserOrders = asyncHandler(async (req, res) => {
   if (orders) {
     res.json(orders);
   } else {
-    res.status(404);
-    throw new Error('no orders found')
+    res.status(404).send("No orders could be found");
+    throw new Error("no orders found");
   }
+});
 
-})
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+	try {
+    const user = await User.deleteOne({_id: req.params.id });
+		res.json(user);
+	} catch (error) {
+		res.status(404).send("This user could not be found");
+		throw new Error('This user could not be found.');
+	}
+});
 
 userRoutes.route("/login").post(loginUser);
 userRoutes.route("/register").post(registerUser);
-userRoutes.route("/verify-email").get(protectRoute,verifyEmail);
+userRoutes.route("/verify-email").get(protectRoute, verifyEmail);
 userRoutes.route("/password-reset-request").post(passwordResetRequest);
-userRoutes.route("/password-reset").post(passwordReset);
+userRoutes.route("/password-reset").post(protectRoute, passwordReset);
 userRoutes.route("/google-login").post(googleLogin);
-userRoutes.route('/:id').get(protectRoute, getUserOrders);
+userRoutes.route("/:id").get(protectRoute, getUserOrders);
+userRoutes.route("/").get(protectRoute, admin, getUsers);
+userRoutes.route("/:id").delete(protectRoute, admin, deleteUser);
 
 export default userRoutes;

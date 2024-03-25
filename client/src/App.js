@@ -15,11 +15,12 @@ import RegistrationScreen from "./screens/RegistrationScreen";
 import axios from "axios";
 import { VStack, Spinner } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import {GoogleOAuthProvider} from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import CheckoutScreen from "./screens/CheckoutScreen";
 import CancelScreen from "./screens/CancelScreen";
 import YourOrdersScreen from "./screens/YourOrdersScreen";
 import SuccessScreen from "./screens/SuccessScreen";
+import AdminConsoleScreen from "./screens/AdminConsoleScreen";
 
 function App() {
   const theme2 = extendTheme({
@@ -39,38 +40,40 @@ function App() {
     };
     googleKey();
   }, [googleClient]);
-  return !googleClient ? (
-    <VStack pt='37vh'>
-      {" "}
-      <Spinner mt='20' thickness='2px' speed='0.65s' emptyColor='gray.200' color='cyan.500' size='xl' />
-    </VStack>
-  ) : (
-    <GoogleOAuthProvider clientId={googleClient}>
-      <ChakraProvider theme={theme2}>
-        <ThemeProvider theme={theme}>
-          <Router>
-            <Header />{" "}
-            <main>
-              <Routes>
-                <Route path='/products' element={<ProductsScreen />} />
-                <Route path='/' element={<LandingScreen />} />
-                <Route path='/product/:id' element={<ProductScreen />} />
-                <Route path='/cart' element={<CartScreen />} />
-                <Route path='/login' element={<LoginScreen />} />
-                <Route path='/registration' element={<RegistrationScreen />} />
-                <Route path='/email-verify/:token' element={<EmailVerificationScreen />} />
+  return (
+    <ChakraProvider theme = {theme2}>
+      {!googleClient ? (
+        <VStack pt='37vh'>
+          <Spinner mt='20' thickness='2px' speed='0.65s' emptyColor='gray.200' color='cyan.500' size='xl' />
+        </VStack>
+      ) : (
+        <GoogleOAuthProvider clientId={googleClient}>
+          <ThemeProvider theme={theme}>
+            <Router>
+              <Header />
+              <main>
+                <Routes>
+                  <Route path='/products' element={<ProductsScreen />} />
+                  <Route path='/' element={<LandingScreen />} />
+                  <Route path='/product/:id' element={<ProductScreen />} />
+                  <Route path='/cart' element={<CartScreen />} />
+                  <Route path='/login' element={<LoginScreen />} />
+                  <Route path='/registration' element={<RegistrationScreen />} />
+                  <Route path='/email-verify/:token' element={<EmailVerificationScreen />} />
                   <Route path='/password-reset/:token' element={<PasswordResetScreen />} />
                   <Route path='/checkout' element={<CheckoutScreen />} />
                   <Route path='/cancel' element={<CancelScreen />} />
                   <Route path='/order-history' element={<YourOrdersScreen />} />
                   <Route path='/success' element={<SuccessScreen />} />
-              </Routes>
-            </main>
-            <Footer />
-          </Router>
-        </ThemeProvider>
-      </ChakraProvider>
-    </GoogleOAuthProvider>
+                  <Route path='/admin-console' element={<AdminConsoleScreen />} />
+                </Routes>
+              </main>
+              <Footer />
+            </Router>
+          </ThemeProvider>
+        </GoogleOAuthProvider>
+      )}
+    </ChakraProvider>
   );
 }
 

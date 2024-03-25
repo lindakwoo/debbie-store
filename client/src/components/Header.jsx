@@ -37,6 +37,10 @@ import { TbShoppingCart } from "react-icons/tb";
 import { logout } from "../redux/actions/userActions";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
+import { googleLogout } from "@react-oauth/google";
+import { styled } from "@mui/system";
+
+const Button = styled("button")({});
 
 const Links = [
   { name: "Products", route: "/products" },
@@ -61,6 +65,7 @@ const Header = () => {
   }, [favoritesToggled, dispatch, userInfo]);
 
   const logoutHandler = () => {
+    googleLogout();
     dispatch(logout());
     toast({
       description: "You have been logged out.",
@@ -71,7 +76,7 @@ const Header = () => {
 
   return (
     <>
-      <Box bg={mode(`cyan.300`, "gray.900")} px='4'>
+      <Box bg={mode(`cyan.300`, "gray.900")} sx={{ position: "relative", zIndex: 1000 }} px='4'>
         <Flex h='16' alignItems='center' justifyContent='space-between'>
           <Flex display={{ base: "flex", md: "none" }} alignItems='center'>
             <IconButton
@@ -97,7 +102,7 @@ const Header = () => {
           <HStack spacing='8' alignItems='center'>
             <Box alignItems='center' display='flex' as={ReactLink} to='/'>
               <Icon as={BsPhoneFlip} h='6' w='6' color={mode("black", "yellow.200")} />
-              <Text as='b'>Debbie's store</Text>
+              <Text as='b'>Tech Lines</Text>
             </Box>
 
             <HStack as='nav' spacing='4' display={{ base: "none", md: "flex" }}>
@@ -155,7 +160,7 @@ const Header = () => {
                     <Text pl='3' as='i'>
                       {userInfo.email}
                     </Text>
-                    {/* {userInfo.googleId && <FcGoogle />} */}
+                    {userInfo.googleId && <FcGoogle />}
                   </HStack>
                   <Divider py='1' />
                   <MenuItem as={ReactLink} to='/order-history'>
@@ -167,7 +172,7 @@ const Header = () => {
                   {userInfo.isAdmin && (
                     <>
                       <MenuDivider />
-                      <MenuItem as={ReactLink} to='/admin-console'>
+                      <MenuItem as={ReactLink} to={"/admin-console"}>
                         <MdOutlineAdminPanelSettings />
                         <Text ml='2'>Admin Console</Text>
                       </MenuItem>

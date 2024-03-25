@@ -15,58 +15,10 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { BsPhoneFlip } from "react-icons/bs";
-import axios from "axios";
 
 const LandingScreen = () => {
-  const [username, setUsername] = useState("");
-  const [repos, setRepos] = useState([]);
-  const [error, setError] = useState(null);
-
-  const fetchRepos = async () => {
-    try {
-      const { data } = await axios.get(`https://api.github.com/users/${username}/repos`);
-      console.log(data);
-
-      setRepos(data);
-      setError(null);
-    } catch (error) {
-      setRepos([]);
-      setError("user not found or there was an error fetching the repos", error.message);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetchRepos();
-  };
-
   return (
     <Box maxW='8xl' mx='auto' p={{ base: "0", lg: "12" }} minH='6xl'>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <label for='username'>username</label>
-          <input
-            name='username'
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-            type='text'
-          ></input>
-          <button type='submit'>get repos</button>
-        </form>
-        {repos && (
-          <ul>
-            {repos.map((repo, i) => {
-              return (
-                <li key={`repo: ${repo} ${i}`}>
-                  <a href={repo.html_url}>{repo.name}</a>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        {error && <div>{error}</div>}
-      </div>
       <Stack direction={{ base: "column-reverse", lg: "row" }} spacing={{ base: "0", lg: "20" }}>
         <Box
           width={{ lg: "sm" }}
@@ -81,7 +33,7 @@ const LandingScreen = () => {
               <Flex alignItems='center'>
                 <Icon as={BsPhoneFlip} h={12} w={12} color={mode("cyan.500", "yellow.200")} />
                 <Text fontSize='4xl' fontWeight='bold'>
-                  Debbie's store
+                  Debbie's tshirt store
                 </Text>
               </Flex>
               <Heading size='xl' fontWeight='normal'>
