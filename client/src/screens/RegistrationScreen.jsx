@@ -24,6 +24,10 @@ import * as Yup from "yup";
 import PasswordField from "../components/PasswordField";
 import { register, resetPassword, resetState } from "../redux/actions/userActions";
 import TextField from "../components/TextField";
+import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { googleLogin } from "../redux/actions/userActions";
 
 const RegistrationScreen = () => {
   const navigate = useNavigate();
@@ -33,6 +37,18 @@ const RegistrationScreen = () => {
   const { loading, error, userInfo } = useSelector((state) => state.user);
   const headingBR = useBreakpointValue({ base: "xs", md: "sm" });
   const boxBR = useBreakpointValue({ base: "transparent", md: "bg-surface" });
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      const userInfo = await axios
+        .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${response.access_token}` },
+        })
+        .then((res) => res.data);
+      const { sub, email, name, picture } = userInfo;
+      dispatch(googleLogin(sub, email, name, picture));
+    },
+  });
 
   useEffect(() => {
     if (userInfo) {
@@ -113,6 +129,16 @@ const RegistrationScreen = () => {
                 <Stack spacing='6'>
                   <Button colorScheme='cyan' size='lg' fontSize='md' isLoading={loading} type='submit'>
                     Sign up
+                  </Button>
+                  <Button
+                    leftIcon={<FcGoogle />}
+                    colorScheme='cyan'
+                    size='lg'
+                    fontSize='md'
+                    isLoading={loading}
+                    onClick={() => handleGoogleLogin()}
+                  >
+                    Google sign in
                   </Button>
                 </Stack>
               </Stack>
