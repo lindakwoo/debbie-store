@@ -1,17 +1,20 @@
 import nodemailer from 'nodemailer';
 // agxo sfiv hdvj ypfd
 // lindakwoo@gmail.com
+
+const url = process.env.NODE_ENV=='development'? 'http://localhost:3000/':`https://debbie-elye.onrender.com/`;
 export const sendVerificationEmail = (token, email, name) => {
-	const html = `
-    <html>
+	const html = 
+    `<html>
         <body>
             <h3>Dear ${name}</h3>
             <p>Thanks for signing up at Debbie's store!</p>
             <p>Use the link below to verify your email</p>
-            <a href="http://localhost:3000/email-verify/${token}">Verify email</a>
+            <a href="${url}email-verify/${token}">Verify email</a>
         </body>
     </html>
     `;
+	
 
 	const transporter = nodemailer.createTransport({
 		service: 'gmail',

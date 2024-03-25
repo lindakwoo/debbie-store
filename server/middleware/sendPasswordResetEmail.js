@@ -1,12 +1,14 @@
 import nodemailer from 'nodemailer';
 
+const url = process.env.NODE_ENV=='production'? `https://debbie-elye.onrender.com/`: 'http://localhost:3000/';
+
 export const sendPasswordResetEmail = (token, email, name) => {
 	const html = `
     <html>
         <body>
           <h3>Dear ${name}</h3>
              <p>Please click on the link below to reset your password.</p>
-             <a href="http://localhost:3000/password-reset/${token}">Reset my password</a>
+             <a href="${url}password-reset/${token}">Reset my password</a>
         </body>
     </html>`;
 
@@ -22,7 +24,7 @@ export const sendPasswordResetEmail = (token, email, name) => {
 		from: 'lindakwoo@gmail.com',
 		to: email,
 		subject: "Debbie's store: Reset your password request.",
-		html: html,
+		html: html
 	};
 
 	transporter.sendMail(mailOptions, function (error, info) {
