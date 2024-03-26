@@ -19,7 +19,7 @@ const CartItem = ({ cartItem }) => {
         </Flex>
         <Spacer />
         <Flex alignItems='center' justify='space-between'>
-          <Select
+          <select
             maxW='68px'
             focusBorderColor={mode("cyan.500", "cyan.200")}
             value={qty}
@@ -32,7 +32,7 @@ const CartItem = ({ cartItem }) => {
                 {item + 1}
               </option>
             ))}
-          </Select>
+          </select>
           <Text fontWeight='bold'>${price}</Text>
         </Flex>
       </VStack>

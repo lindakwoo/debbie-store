@@ -26,6 +26,7 @@ import { login, googleLogin } from "../redux/actions/userActions";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
+import { IoMdAlert } from "react-icons/io";
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -107,13 +108,14 @@ const LoginScreen = () => {
               <Stack spacing='6' as='form' onSubmit={formik.handleSubmit}>
                 {error && (
                   <Alert
+                    sx={{ backgroundColor: "yellow" }}
                     status='error'
                     flexDirection='column'
                     alignItems='center'
                     justifyContent='center'
                     textAlign='center'
                   >
-                    <AlertIcon />
+                    <IoMdAlert />
                     <AlertTitle>We are sorry!</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>

@@ -22,6 +22,7 @@ import { Link as ReactLink, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import PasswordField from "../components/PasswordField";
 import { resetPassword, resetState } from "../redux/actions/userActions";
+import { IoMdAlert } from "react-icons/io";
 
 const PasswordResetScreen = () => {
   const { token } = useParams();
@@ -91,13 +92,14 @@ const PasswordResetScreen = () => {
               <Stack spacing='6' as='form' onSubmit={formik.handleSubmit}>
                 {error && (
                   <Alert
+                    sx={{ backgroundColor: "yellow" }}
                     status='error'
                     flexDirection='column'
                     alignItems='center'
                     justifyContent='center'
                     textAlign='center'
                   >
-                    <AlertIcon />
+                    <IoMdAlert />
                     <AlertTitle>We are sorry!</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>

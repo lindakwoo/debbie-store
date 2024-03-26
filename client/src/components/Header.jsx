@@ -23,8 +23,8 @@ import {
   Spacer,
   useToast,
 } from "@chakra-ui/react";
+import { IoShirtOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { BsPhoneFlip } from "react-icons/bs";
 import { Link as ReactLink } from "react-router-dom";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,14 +39,13 @@ import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { googleLogout } from "@react-oauth/google";
 import { styled } from "@mui/system";
+import { IoMdAlert } from "react-icons/io";
 
 const Button = styled("button")({});
 
 const Links = [
   { name: "Products", route: "/products" },
-  { name: "Hot Deals", route: "/hot-deals" },
   { name: "Contact", route: "/contact" },
-  { name: "Services", route: "/services" },
 ];
 
 const Header = () => {
@@ -101,8 +100,10 @@ const Header = () => {
           </Flex>
           <HStack spacing='8' alignItems='center'>
             <Box alignItems='center' display='flex' as={ReactLink} to='/'>
-              <Icon as={BsPhoneFlip} h='6' w='6' color={mode("black", "yellow.200")} />
-              <Text as='b'>Tech Lines</Text>
+              <IoShirtOutline />
+              <Text sx={{ marginLeft: "10px" }} as='b'>
+                Debbie's Store
+              </Text>
             </Box>
 
             <HStack as='nav' spacing='4' display={{ base: "none", md: "flex" }}>
@@ -120,7 +121,7 @@ const Header = () => {
                 )}
               </Box>
 
-              <ColorModeToggle />
+              {/* <ColorModeToggle />
               {favoritesToggled ? (
                 <IconButton
                   onClick={() => dispatch(toggleFavorites(false))}
@@ -133,7 +134,7 @@ const Header = () => {
                   icon={<MdOutlineFavoriteBorder size='20px' />}
                   variant='ghost'
                 />
-              )}
+              )} */}
             </HStack>
           </HStack>
           <Flex alignItems='center'>
@@ -229,7 +230,7 @@ const Header = () => {
       {userInfo && !userInfo.active && showBanner && (
         <Box>
           <Alert status='warning'>
-            <AlertIcon />
+            <IoMdAlert />
             <AlertTitle>Email not verified!</AlertTitle>
             <AlertDescription>You must verify your email address.</AlertDescription>
             <Spacer />

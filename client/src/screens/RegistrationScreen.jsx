@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertDescription,
-  AlertIcon,
   AlertTitle,
   Box,
   Button,
@@ -16,6 +15,7 @@ import {
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
+import { IoMdAlert } from "react-icons/io";
 import { Formik } from "formik";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,14 +80,22 @@ const RegistrationScreen = () => {
       }}
     >
       {(formik) => (
-        <Container maxW='lg' py={{ base: "12", md: "24" }} px={{ base: "0", md: "8" }} minH='4xl'>
+        <Container sx={{ mx: "auto" }} maxW='lg' py={{ base: "12", md: "24" }} px={{ base: "0", md: "8" }} minH='4xl'>
           <Stack spacing='8'>
             <Stack spacing='6'>
               <Stack spacing={{ base: "2", md: "3" }} textAlign='center'>
-                <Heading size={headingBR}>Create an account.</Heading>
+                <Heading sx={{ fontSize: "36px" }} fontSize={{ base: "md", lg: "xl" }}>
+                  Create an account.
+                </Heading>
                 <HStack spacing='1' justify='center'>
                   <Text color='muted'>Already a user?</Text>
-                  <Button as={ReactLink} to='/login' variant='link' colorScheme='cyan'>
+                  <Button
+                    sx={{ color: "cyan", fontWeight: "1000" }}
+                    as={ReactLink}
+                    to='/login'
+                    variant='link'
+                    colorScheme='cyan'
+                  >
                     Sign in
                   </Button>
                 </HStack>
@@ -108,7 +116,7 @@ const RegistrationScreen = () => {
                     justifyContent='center'
                     textAlign='center'
                   >
-                    <AlertIcon />
+                    <IoMdAlert />
                     <AlertTitle>We are sorry!</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
@@ -138,7 +146,7 @@ const RegistrationScreen = () => {
                     isLoading={loading}
                     onClick={() => handleGoogleLogin()}
                   >
-                    Google sign in
+                    Google sign up
                   </Button>
                 </Stack>
               </Stack>

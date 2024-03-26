@@ -23,6 +23,7 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers, deleteUser, resetErrorAndRemoval } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
+import { IoMdAlert } from "react-icons/io";
 
 const UsersTab = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,7 +55,7 @@ const UsersTab = () => {
     <Box>
       {error && (
         <Alert status='error'>
-          <AlertIcon />
+          <IoMdAlert />
           <AlertTitle>Oooops...something happened.</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

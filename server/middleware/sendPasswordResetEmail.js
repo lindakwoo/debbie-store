@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer';
 
-const url = process.env.NODE_ENV=='production'? `https://debbie-elye.onrender.com/`: 'http://localhost:3000/';
 
 export const sendPasswordResetEmail = (token, email, name) => {
+	const url = process.env.NODE_ENV=='development'? 'http://localhost:3000/':`https://debbie-elye.onrender.com/`;
 	const html = `
     <html>
         <body>

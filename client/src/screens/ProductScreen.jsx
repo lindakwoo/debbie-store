@@ -2,7 +2,6 @@ import { MinusIcon, SmallAddIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
-  AlertIcon,
   AlertTitle,
   Badge,
   Box,
@@ -29,6 +28,7 @@ import { useEffect, useState } from "react";
 import { addCartItem } from "../redux/actions/cartActions";
 import Star from "../components/Star";
 import { createProductReview } from "../redux/actions/productActions";
+import { IoMdAlert } from "react-icons/io";
 
 const ProductScreen = () => {
   const [amount, setAmount] = useState(1);
@@ -94,8 +94,8 @@ const ProductScreen = () => {
           <Spinner mt='20' thickness='2px' speed='0.65s' emptyColor='gray.200' color='cyan.500' size='xl' />
         </Stack>
       ) : error ? (
-        <Alert status='error'>
-          <AlertIcon />
+        <Alert sx={{ backgroundColor: "yellow" }} status='error'>
+          <IoMdAlert />
           <AlertTitle>We are sorry!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

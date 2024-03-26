@@ -18,6 +18,7 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
+import { IoMdAlert } from "react-icons/io";
 import { getUserOrders } from "../redux/actions/userActions";
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
@@ -42,8 +43,8 @@ const YourOrdersScreen = () => {
           </Stack>
         </Wrap>
       ) : error ? (
-        <Alert status='error'>
-          <AlertIcon />
+        <Alert sx={{ backgroundColor: "yellow" }} status='error'>
+          <IoMdAlert />
           <AlertTitle>We are sorry!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

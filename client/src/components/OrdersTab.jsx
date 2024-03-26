@@ -26,6 +26,7 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
+import { IoMdAlert } from "react-icons/io";
 
 const OrdersTab = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,7 +69,7 @@ const OrdersTab = () => {
     <Box>
       {error && (
         <Alert status='error'>
-          <AlertIcon />
+          <IoMdAlert />
           <AlertTitle>Ooops! Something happened</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

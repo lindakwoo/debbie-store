@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useParams, Link as ReactLink } from "react-router-dom";
 import { verifyEmail } from "../redux/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import { IoMdAlert } from "react-icons/io";
 import {
   AbsoluteCenter,
   Box,
@@ -33,6 +34,7 @@ const EmailVerificationScreen = () => {
           </Box>
         ) : error === null ? (
           <Alert
+            sx={{ backgroundColor: "yellow" }}
             bg='parent'
             status='success'
             flexDirection='column'
@@ -40,7 +42,7 @@ const EmailVerificationScreen = () => {
             justifyContent='center'
             textAlign='center'
           >
-            <AlertIcon boxSize='16' size='xl' />
+            <IoMdAlert />
             <AlertTitle>Thanks for verifying your email.</AlertTitle>
             <AlertDescription fontSize='xl'>You can close this window now.</AlertDescription>
           </Alert>
@@ -53,7 +55,7 @@ const EmailVerificationScreen = () => {
             justifyContent='center'
             textAlign='center'
           >
-            <AlertIcon boxSize='16' size='xl' />
+            <IoMdAlert />
             <AlertTitle>We are sorry!</AlertTitle>
             <AlertDescription fontSize='xl'>{error}</AlertDescription>
           </Alert>

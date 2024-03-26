@@ -22,6 +22,7 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, resetProductError } from "../redux/actions/productActions";
+import { IoMdAlert } from "react-icons/io";
 
 import AddNewProduct from "./AddNewProduct";
 import ProductTableItem from "./ProductTableItem";
@@ -48,7 +49,7 @@ const ProductsTab = () => {
     <Box>
       {error && (
         <Alert status='error'>
-          <AlertIcon />
+          <IoMdAlert />
           <AlertTitle>Upps!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

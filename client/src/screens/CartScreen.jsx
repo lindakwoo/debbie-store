@@ -17,6 +17,7 @@ import { Link as ReactLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
+import { IoMdAlert } from "react-icons/io";
 
 const CartScreen = () => {
   const { loading, error, cartItems } = useSelector((state) => state.cart);
@@ -31,13 +32,13 @@ const CartScreen = () => {
         </Stack>
       ) : error ? (
         <Alert status='error'>
-          <AlertIcon />
+          <IoMdAlert />
           <AlertTitle>We are sorry!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       ) : cartItems.length <= 0 ? (
-        <Alert status='warning'>
-          <AlertIcon />
+        <Alert sx={{ backgroundColor: "yellow" }} status='warning'>
+          <IoMdAlert />
           <AlertTitle>Your cart is empty.</AlertTitle>
           <AlertDescription>
             <Link as={ReactLink} to='/products'>

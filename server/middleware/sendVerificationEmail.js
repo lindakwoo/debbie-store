@@ -2,8 +2,9 @@ import nodemailer from 'nodemailer';
 // agxo sfiv hdvj ypfd
 // lindakwoo@gmail.com
 
-const url = process.env.NODE_ENV=='development'? 'http://localhost:3000/':`https://debbie-elye.onrender.com/`;
+
 export const sendVerificationEmail = (token, email, name) => {
+	const url = process.env.NODE_ENV=='development'? 'http://localhost:3000/':`https://debbie-elye.onrender.com/`;
 	const html = 
     `<html>
         <body>

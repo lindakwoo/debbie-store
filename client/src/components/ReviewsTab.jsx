@@ -29,6 +29,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeReview } from "../redux/actions/adminActions";
 import { getProducts } from "../redux/actions/productActions";
+import { IoMdAlert } from "react-icons/io";
 
 const ReviewsTab = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const ReviewsTab = () => {
     <Box>
       {error && (
         <Alert status='error'>
-          <AlertIcon />
+          <IoMdAlert />
           <AlertTitle>Upps!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
