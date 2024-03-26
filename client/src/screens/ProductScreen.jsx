@@ -125,7 +125,7 @@ const ProductScreen = () => {
                 <Stack spacing='5'>
                   <Box>
                     <Text fontSize='xl'>${product.price}</Text>
-                    <Flex>
+                    {/* <Flex>
                       <HStack spacing='2px'>
                         <Star color='cyan.500' />
                         <Star rating={product.rating} star={2} />
@@ -136,7 +136,7 @@ const ProductScreen = () => {
                       <Text fontSize='md' fontWeight='bold' ml='4px'>
                         {product.numberOfReviews} Reviews
                       </Text>
-                    </Flex>
+                    </Flex> */}
                   </Box>
                   <Text>{product.subtitle}</Text>
                   <Text>{product.description}</Text>
@@ -199,7 +199,7 @@ const ProductScreen = () => {
               </Flex>
             </Stack>
 
-            {userInfo && (
+            {/* {userInfo && (
               <>
                 <Tooltip label={hasUserReviewed() && "you have already reviewed this product."} fontSize='medium'>
                   <Button
@@ -257,8 +257,8 @@ const ProductScreen = () => {
                   </Stack>
                 )}
               </>
-            )}
-            <Stack>
+            )} */}
+            {/* <Stack>
               <Text fontSize='xl' fontWeight='bold'>
                 Reviews
               </Text>
@@ -282,7 +282,7 @@ const ProductScreen = () => {
                   </Box>
                 ))}
               </SimpleGrid>
-            </Stack>
+            </Stack> */}
           </Box>
         )
       )}

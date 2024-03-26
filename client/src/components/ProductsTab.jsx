@@ -65,10 +65,10 @@ const ProductsTab = () => {
           <Accordion allowToggle>
             <AccordionItem>
               <h2>
-                <AccordionButton>
-                  <Box flex='1' textAlign='right'>
+                <AccordionButton sx={{ width: "200px" }}>
+                  <Box flex='1' textAlign='left'>
                     <Box>
-                      <Text mr='8px' fontWeight='bold'>
+                      <Text sx={{ backgroundColor: "yellow", p: "10px" }} mr='8px' fontWeight='bold'>
                         Add a new Product
                       </Text>
                     </Box>

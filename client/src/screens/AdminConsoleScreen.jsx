@@ -18,23 +18,26 @@ const AdminConsoleScreen = () => {
             Admin Console
           </Heading>
           <Tabs size='md' variant='enclosed'>
-            <TabList>
-              <Tab>Users</Tab>
-              <Tab>Products</Tab>
-              <Tab>Reviews</Tab>
-              <Tab>Orders</Tab>
+            <TabList sx={{ mb: "30px" }}>
+              <Tab sx={{ p: "10px", backgroundColor: "yellow", ml: "20px" }}>Users</Tab>
+              <Tab sx={{ p: "10px", backgroundColor: "yellow", ml: "20px" }}>Products</Tab>
+              {/* <Tab>Reviews</Tab> */}
+              <Tab sx={{ p: "10px", backgroundColor: "yellow", ml: "20px" }}>Orders</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
+                <Box sx={{ fontSize: "32px" }}>USERS</Box>
                 <UsersTab />
               </TabPanel>
               <TabPanel>
+                <Box sx={{ fontSize: "32px" }}>PRODUCTS</Box>
                 <ProductsTab />
               </TabPanel>
-              <TabPanel>
+              {/* <TabPanel>
                 <ReviewsTab />
-              </TabPanel>
+              </TabPanel> */}
               <TabPanel>
+                <Box sx={{ fontSize: "32px" }}>ORDERS</Box>
                 <OrdersTab />
               </TabPanel>
             </TabPanels>
