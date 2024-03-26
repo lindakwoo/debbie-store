@@ -40,6 +40,7 @@ import { FcGoogle } from "react-icons/fc";
 import { googleLogout } from "@react-oauth/google";
 import { styled } from "@mui/system";
 import { IoMdAlert } from "react-icons/io";
+import { PiTShirt } from "react-icons/pi";
 
 const Button = styled("button")({});
 
@@ -100,7 +101,7 @@ const Header = () => {
           </Flex>
           <HStack spacing='8' alignItems='center'>
             <Box alignItems='center' display='flex' as={ReactLink} to='/'>
-              <IoShirtOutline />
+              <PiTShirt />
               <Text sx={{ marginLeft: "10px" }} as='b'>
                 Debbie's Shirts
               </Text>
