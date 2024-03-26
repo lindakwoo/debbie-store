@@ -102,7 +102,7 @@ const Header = () => {
             <Box alignItems='center' display='flex' as={ReactLink} to='/'>
               <IoShirtOutline />
               <Text sx={{ marginLeft: "10px" }} as='b'>
-                Debbie's Store
+                Debbie's Shirts
               </Text>
             </Box>
 

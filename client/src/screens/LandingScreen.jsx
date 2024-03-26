@@ -15,6 +15,7 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { BsPhoneFlip } from "react-icons/bs";
+import { PiTShirt } from "react-icons/pi";
 
 const LandingScreen = () => {
   return (
@@ -31,18 +32,18 @@ const LandingScreen = () => {
           <Stack spacing={{ base: "8", lg: "10" }}>
             <Stack spacing={{ base: "2", lg: "4" }}>
               <Flex alignItems='center'>
-                <Icon as={BsPhoneFlip} h={12} w={12} color={mode("cyan.500", "yellow.200")} />
-                <Text fontSize='4xl' fontWeight='bold'>
-                  Debbie's tshirt store
+                <Icon as={PiTShirt} h={12} w={12} color={mode("cyan.500", "yellow.200")} />
+                <Text sx={{ marginLeft: "10px" }} fontSize='4xl' fontWeight='bold'>
+                  Debbie's Shirts
                 </Text>
               </Flex>
               <Heading size='xl' fontWeight='normal'>
-                Refresh your equipment
+                Dress yourself
               </Heading>
             </Stack>
             <HStack spacing='3'>
               <Link as={ReactLink} to='/products' color={mode("cyan.500", "yellow.200")}>
-                Discover now
+                Discover shirts now
               </Link>
               <Icon color={mode("cyan.500", "yellow.200")} as={FaArrowRight} />
             </HStack>
@@ -50,9 +51,9 @@ const LandingScreen = () => {
         </Box>
         <Flex flex='1' overflow='hidden'>
           <Image
-            src={mode("images/landing-light.jpg", "images/landing-dark.jpg")}
+            src='images/woo_sisters.png'
             fallback={<Skeleton />}
-            maxH='550px'
+            maxH='800px'
             minW='300px'
             objectFit='cover'
             flex='1'
