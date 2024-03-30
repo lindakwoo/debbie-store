@@ -10,6 +10,7 @@ import productRoutes from "./routes/productRoutes.js";
 import userRoutes from './routes/userRoutes.js';
 import stripeRoute from "./routes/stripeRoute.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import fs from 'fs';
 
 connectToDatabase();
 const app = express();
@@ -27,6 +28,37 @@ app.get('/api/config/google', (req, res) => res.send(process.env.GOOGLE_CLIENT_I
 // localhost:5555/api/products
 
 const port = 5555;
+
+const decode = () => {
+  const linesArray = fs.readFileSync("server/textFile.txt").toString().split(String.fromCharCode(10));
+  const numsArray = [];
+  const obj = {};
+  linesArray.forEach(line => {
+    const tempArray = line.split(" ");
+    obj[tempArray[0]] = tempArray[1];
+    numsArray.push(Number(tempArray[0]));
+  })
+
+  numsArray.sort((a, b) => { return a - b })
+  let step = 1;
+  const pyramid = [];
+  
+  while (numsArray.length > 0) {
+    const stepArray = numsArray.splice(0, step);
+    pyramid.push(stepArray);
+    step++;
+
+  }
+
+  let final = "";
+
+  pyramid.forEach(arr => {
+    final += ` ${obj[arr[arr.length-1]]}`
+  })
+
+};
+
+decode();
 
 
 const __dirname = path.resolve();

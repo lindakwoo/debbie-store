@@ -40,47 +40,48 @@ const ProductCard = ({ product, loading }) => {
 
   return (
     <Skeleton isLoaded={!loading}>
-      <Box
-        _hover={{ transform: "scale(1.1)", transitionDuration: "0.5s" }}
-        borderWidth='1px'
-        overflow='hidden'
-        p='4'
-        shadow='md'
-      >
-        <Image
-          onMouseEnter={() => setIsShown(true)}
-          onMouseLeave={() => setIsShown(false)}
-          src={product.images[isShown && product.images.length === 2 ? 1 : 0]}
-          fallbackSrc='https://via.placeholder.com/150'
-          alt={product.name}
-          height='200px'
-        />
-        {product.stock < 5 ? (
-          <Badge colorScheme='yellow'>only {product.stock} left</Badge>
-        ) : product.stock < 1 ? (
-          <Badge colorScheme='red'>Sold out</Badge>
-        ) : (
-          <Badge colorScheme='green'>In Stock</Badge>
-        )}
-        {product.productIsNew && (
-          <Badge ml='2' colorScheme='purple'>
-            new
-          </Badge>
-        )}
-        <Text noOfLines={1} fontSize='xl' fontWeight='semibold' mt='2'>
-          {product.brand} {` `} {product.name}
-        </Text>
-        <Text noOfLines={1} fontSize='md' color='gray.600'>
-          {product.subtitle}
-        </Text>
-        <Flex justify='space-between' alignItems='center' mt='2'>
-          <Badge colorScheme='cyan'>{product.category}</Badge>
-          <Text fontSize='xl' fontWeight='semibold' color='cyan.600'>
-            ${product.price}
+      <ReactLink to={`/product/${product._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+        <Box
+          _hover={{ transform: "scale(1.1)", transitionDuration: "0.5s" }}
+          borderWidth='1px'
+          overflow='hidden'
+          p='4'
+          shadow='md'
+        >
+          <Image
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+            src={product.images[isShown && product.images.length === 2 ? 1 : 0]}
+            fallbackSrc='https://via.placeholder.com/150'
+            alt={product.name}
+            height='200px'
+          />
+          {product.stock < 5 ? (
+            <Badge colorScheme='yellow'>only {product.stock} left</Badge>
+          ) : product.stock < 1 ? (
+            <Badge colorScheme='red'>Sold out</Badge>
+          ) : (
+            <Badge colorScheme='green'>In Stock</Badge>
+          )}
+          {product.productIsNew && (
+            <Badge ml='2' colorScheme='purple'>
+              new
+            </Badge>
+          )}
+          <Text noOfLines={1} fontSize='xl' fontWeight='semibold' mt='2'>
+            {product.brand} {` `} {product.name}
           </Text>
-        </Flex>
-        <Flex justify='space-between' mt='2'>
-          {/* {favorites.includes(product._id) ? (
+          <Text noOfLines={1} fontSize='md' color='gray.600'>
+            {product.subtitle}
+          </Text>
+          <Flex justify='space-between' alignItems='center' mt='2'>
+            <Badge colorScheme='cyan'>{product.category}</Badge>
+            <Text fontSize='xl' fontWeight='semibold' color='cyan.600'>
+              ${product.price}
+            </Text>
+          </Flex>
+          <Flex justify='flex-end' mt='2'>
+            {/* {favorites.includes(product._id) ? (
             <IconButton
               icon={<MdOutlineFavorite size='20px' />}
               colorScheme='cyan'
@@ -96,35 +97,28 @@ const ProductCard = ({ product, loading }) => {
             />
           )} */}
 
-          <IconButton
-            icon={<BiExpand size='20' />}
-            as={ReactLink}
-            to={`/product/${product._id}`}
-            colorScheme='cyan'
-            size='sm'
-          />
-
-          <Tooltip
-            isDisabled={!cartPlusDisabled}
-            hasArrow
-            label={
-              !cartPlusDisabled
-                ? "You reached the maximum quantity jof the product. "
-                : product.stock <= 0
-                  ? "Out of stock"
-                  : ""
-            }
-          >
-            <IconButton
-              isDisabled={product.stock <= 0 || cartPlusDisabled}
-              onClick={() => addItem(product._id)}
-              icon={<TbShoppingCartPlus size='20' />}
-              colorScheme='cyan'
-              size='sm'
-            />
-          </Tooltip>
-        </Flex>
-      </Box>
+            <Tooltip
+              isDisabled={!cartPlusDisabled}
+              hasArrow
+              label={
+                !cartPlusDisabled
+                  ? "You reached the maximum quantity jof the product. "
+                  : product.stock <= 0
+                    ? "Out of stock"
+                    : ""
+              }
+            >
+              <IconButton
+                isDisabled={product.stock <= 0 || cartPlusDisabled}
+                onClick={() => addItem(product._id)}
+                icon={<TbShoppingCartPlus size='20' />}
+                colorScheme='cyan'
+                size='sm'
+              />
+            </Tooltip>
+          </Flex>
+        </Box>
+      </ReactLink>
     </Skeleton>
   );
 };

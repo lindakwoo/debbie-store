@@ -230,7 +230,7 @@ const Header = () => {
       </Box>
       {userInfo && !userInfo.active && showBanner && (
         <Box>
-          <Alert status='warning'>
+          <Alert sx={{ fontSize: "32px", backgroundColor: "yellow" }} status='warning'>
             <IoMdAlert />
             <AlertTitle>Email not verified!</AlertTitle>
             <AlertDescription>You must verify your email address.</AlertDescription>
