@@ -34,7 +34,7 @@ const OrderSummary = ({ checkoutSreen = false }) => {
           <Text fontSize='xl' fontWeight='extrabold'>
             Total
           </Text>
-          <Text fontWeight='medium'>${Number(subtotal) + Number(shipping)}</Text>
+          <Text fontWeight='medium'>${(Number(subtotal) + Number(shipping)).toFixed(2)}</Text>
         </Flex>
       </Stack>
       <Button
