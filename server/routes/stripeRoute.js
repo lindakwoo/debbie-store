@@ -10,6 +10,7 @@ dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const stripeRoute = express.Router();
+const url = process.env.NODE_ENV=='development'? 'http://localhost:3000/':`https://debbie-elye.onrender.com/`;
 
 const stripePayment = async (req, res) => {
   const data = req.body;
@@ -38,8 +39,8 @@ const stripePayment = async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: `${url}success`,
+    cancel_url: `${url}cancel`,
   });
 
   const order = new Order({
