@@ -21,6 +21,8 @@ import CancelScreen from "./screens/CancelScreen";
 import YourOrdersScreen from "./screens/YourOrdersScreen";
 import SuccessScreen from "./screens/SuccessScreen";
 import AdminConsoleScreen from "./screens/AdminConsoleScreen";
+import IdeasScreen from "./screens/IdeasScreen";
+import IdeaScreen from "./screens/IdeaScreen";
 
 function App() {
   const theme2 = extendTheme({
@@ -65,7 +67,9 @@ function App() {
                   <Route path='/cancel' element={<CancelScreen />} />
                   <Route path='/order-history' element={<YourOrdersScreen />} />
                   <Route path='/success' element={<SuccessScreen />} />
-                  <Route path='/admin-console' element={<AdminConsoleScreen />} />
+                    <Route path='/admin-console' element={<AdminConsoleScreen />} />
+                    <Route path='/ideas' element={<IdeasScreen />} />
+                    <Route path='/idea/:id' element={<IdeaScreen />} />
                 </Routes>
               </main>
               <Footer />
