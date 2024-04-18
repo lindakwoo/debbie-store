@@ -46,6 +46,7 @@ const Button = styled("button")({});
 
 const Links = [
   { name: "Products", route: "/products" },
+  { name: "Review Shirt Ideas", route: "/ideas" },
   { name: "Contact", route: "/contact" },
 ];
 

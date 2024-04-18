@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getIdea, createIdeaReview } from "../redux/actions/ideaActions";
 import { useToast } from "@chakra-ui/react";
+import { removeReview } from "../redux/actions/ideaActions";
 const Input = styled("textArea")({});
 const Button = styled("button")({});
 const Image = styled("img")({});
@@ -39,18 +40,23 @@ const IdeaScreen = () => {
     }
   }, [idea, userInfo]);
 
-  console.log("already", alreadyReviewed);
-
-  useEffect(() => {
-    console.log("State after reset:", { comment, rating });
-  }, [comment, rating]);
-
   const submitReview = async () => {
     await dispatch(createIdeaReview(id, comment, rating, userInfo?.name));
     await dispatch(getIdea(id)); // Fetch latest idea data including the new review
 
     toast({
       description: "Review has been added.",
+      status: "success",
+      isClosable: true,
+    });
+  };
+
+  const deleteReview = async (reviewId) => {
+    await dispatch(removeReview(id, reviewId));
+    await dispatch(getIdea(id));
+
+    toast({
+      description: "Review has been deleted.",
       status: "success",
       isClosable: true,
     });
@@ -151,6 +157,16 @@ const IdeaScreen = () => {
                       <td>{review.name}</td>
                       <td>{review.rating}</td>
                       <td>{review.comment}</td>
+                      {userInfo.name === review.name && (
+                        <Button
+                          onClick={() => {
+                            deleteReview(review._id);
+                          }}
+                          sx={{ backgroundColor: "red", color: "white", p: "5px" }}
+                        >
+                          Delete my review
+                        </Button>
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -55,11 +55,30 @@ const createIdeaReview = asyncHandler(async (req, res) => {
 	}
 });
 
+const removeIdeaReview = asyncHandler(async (req, res) => {
+	const idea = await Idea.findById(req.params.ideaId);
+
+	const updatedReviews = idea.reviews.filter((rev) => rev._id.valueOf() !== req.params.reviewId);
+
+	if (idea) {
+		idea.reviews = updatedReviews;
+
+		await idea.save();
+		const ideas = await Idea.find({});
+
+		res.json({ ideas, pagination: {} });
+	} else {
+		res.status(404).send("Idea not found");
+		throw new Error('Idea not found.');
+	}
+});
+
 
 ideaRoutes.route('/:page/:perPage').get(getIdeas);
 ideaRoutes.route('/').get(getIdeas);
 ideaRoutes.route('/:id').get(getIdea);
 ideaRoutes.route('/reviews/:id').post(createIdeaReview);
+ideaRoutes.route('/reviews/:ideaId/:reviewId').put(removeIdeaReview);
 
 
 export default ideaRoutes;

@@ -58,3 +58,30 @@ export const createIdeaReview = (ideaId, comment, rating, userName) => async (di
       }
   };
   
+export const removeReview = (ideaId, reviewId) => async (dispatch, getState) => {
+      console.log("inside", ideaId, reviewId)
+    const {
+      user: { userInfo },
+    } = getState();
+  
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.put(`/api/ideas/reviews/${ideaId}/${reviewId}`, {}, config);
+      dispatch(setIdeas(data));
+    } catch (error) {
+      dispatch(
+        setError(
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+              ? error.message
+              : "Review could not be removed."
+        )
+      );
+    }
+  };
