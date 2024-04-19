@@ -48,7 +48,6 @@ const Links = [
   { name: "Products", route: "/products" },
   { name: "New Products", route: "/new-products" },
   { name: "Review Shirt Ideas", route: "/ideas" },
-  { name: "Contact", route: "/contact" },
 ];
 
 const Header = () => {

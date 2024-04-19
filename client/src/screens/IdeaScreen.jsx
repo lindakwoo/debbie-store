@@ -157,7 +157,7 @@ const IdeaScreen = () => {
                       <td>{review.name}</td>
                       <td>{review.rating}</td>
                       <td>{review.comment}</td>
-                      {userInfo.name === review.name && (
+                      {userInfo?.name === review.name && (
                         <Button
                           onClick={() => {
                             deleteReview(review._id);
