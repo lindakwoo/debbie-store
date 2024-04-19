@@ -24,6 +24,7 @@ import AdminConsoleScreen from "./screens/AdminConsoleScreen";
 import IdeasScreen from "./screens/IdeasScreen";
 import IdeaScreen from "./screens/IdeaScreen";
 import NewProductsScreen from "./screens/NewProductsScreen";
+import ProductScreenWithSize from "./screens/ProductScreenWithSize";
 
 function App() {
   const theme2 = extendTheme({
@@ -59,7 +60,7 @@ function App() {
                     <Route path='/products' element={<ProductsScreen />} />
                     <Route path='/new-products' element={<NewProductsScreen />} />
                   <Route path='/' element={<LandingScreen />} />
-                  <Route path='/product/:id' element={<ProductScreen />} />
+                  <Route path='/product/:id' element={<ProductScreenWithSize />} />
                   <Route path='/cart' element={<CartScreen />} />
                   <Route path='/login' element={<LoginScreen />} />
                   <Route path='/registration' element={<RegistrationScreen />} />

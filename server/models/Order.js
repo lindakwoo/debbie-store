@@ -4,17 +4,17 @@ const orderSchema = new mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			required: true,
+			required: false,
 			ref: 'User',
 		},
 		username: {
 			type: String,
-			required: true,
+			required: false,
 			ref: 'User',
 		},
 		email: {
 			type: String,
-			required: true,
+			required: false,
 			ref: 'User',
 		},
 		orderItems: [
@@ -22,6 +22,7 @@ const orderSchema = new mongoose.Schema(
 				name: { type: String, required: true },
 				qty: { type: Number, required: true },
 				image: { type: String, required: true },
+				size: {type: String, required:false},
 				price: { type: Number, required: true },
 				id: {
 					type: mongoose.Schema.Types.ObjectId,

@@ -11,6 +11,16 @@ const reviewSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+const sizeSchema = new mongoose.Schema(
+  {
+    xs: { type: Number, required: false },
+    s: { type: Number, required: false },
+    m: { type: Number, required: false },
+    l: { type: Number, required: false },
+    xl: { type: Number, required: false },
+  }
+);
+
 const productSchema = new mongoose.Schema(
   {
     name: {
@@ -53,6 +63,10 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+    },
+    sizes: {
+      type: sizeSchema,
+      required:false,
     },
     stock: {
       type: Number,
