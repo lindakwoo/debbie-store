@@ -18,10 +18,10 @@ const SuccessScreen = () => {
       <Box m='2'>
         <BsBoxSeamFill size='50px' mt='2' />
       </Box>
-      <Text>You can see your order in the order history.</Text>
+      {/* <Text>You can see your order in the order history.</Text>
       <Button as={ReactLink} to='/order-history' mt='2'>
         Check your order history
-      </Button>
+      </Button> */}
     </Center>
   );
 };
