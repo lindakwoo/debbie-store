@@ -7,7 +7,6 @@ import { setAddress, setPayment } from "../redux/actions/orderActions";
 import TextField from "./TextField";
 import { Link as ReactLink } from "react-router-dom";
 import { styled, Stack } from "@mui/system";
-import { useState } from "react";
 
 const Input = styled("input")({});
 const Label = styled("label")({ marginLeft: "10px", "& span": { fontWeight: "800" } });
@@ -16,7 +15,6 @@ const Button = styled("button")({});
 const ShippingInformation = () => {
   const { shipping } = useSelector((state) => state.cart);
   const { shippingAddress } = useSelector((state) => state.order);
-  const [selectedShipping, setSelectedShipping] = useState(shipping || 4.99);
 
   const dispatch = useDispatch();
 
@@ -66,10 +64,9 @@ const ShippingInformation = () => {
                 id='express'
                 name='fav_language'
                 value='14.99'
-                defaultChecked={selectedShipping === 14.99}
+                defaultChecked={shipping === 14.99}
                 onChange={() => {
                   dispatch(setShipping(Number(14.99).toFixed(2)));
-                  setSelectedShipping(14.99);
                 }}
               />
               <Label for='express'>
@@ -81,10 +78,9 @@ const ShippingInformation = () => {
                 id='standard'
                 name='fav_language'
                 value='4.99'
-                defaultChecked={selectedShipping === 4.99}
+                defaultChecked={shipping === 4.99}
                 onChange={() => {
                   dispatch(setShipping(Number(4.99).toFixed(2)));
-                  setSelectedShipping(4.99);
                 }}
               />
               <Label for='standard'>
